@@ -9,9 +9,21 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel = WeatherViewModel()
+    @AppStorage("isDarkMode") private var isDarkMode = false
     var body: some View {
         NavigationView{
+            
             VStack{
+                        Picker("Mode",selection: $isDarkMode){
+                                Text("Light")
+                                    .tag(false)
+                                Text("dark")
+                                    .tag(true)
+                            }.pickerStyle(SegmentedPickerStyle())
+                        .padding()
+                
+                Spacer()
+                
                 Text(viewModel.timezone)
                     .font(.system(size: 34))
                 Text(viewModel.temp)
@@ -22,11 +34,13 @@ struct ContentView: View {
                     .font(.system(size: 44))
                 Text(viewModel.descriptionText)
                     .font(.system(size: 24))
-
-
+                    
+                Spacer()
             }
+        
             .navigationBarTitle("Weather SwiftUI")
-        }
+        }.preferredColorScheme(isDarkMode ? .dark : .light)
+        .accentColor(.primary)
     }
 }
 
